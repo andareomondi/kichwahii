@@ -1,3 +1,4 @@
+
 * {
   margin: 0;
   padding: 0;
@@ -38,8 +39,6 @@ body, html {
   position: relative;
   z-index: 1;
 }
-
-
 .scene.active .content {
   opacity: 1;
   transform: translateY(0);
@@ -125,7 +124,7 @@ p {
 #scene4 { background-image: url('../img/the_little_things.jpg'); }
 #scene5 { background-image: url('../img/adventure.jpg'); }
 #scene6 { background-image: url('../img/part_3.jpg'); }
-#scene7 { background-image: url('../img//last_part.jpg'); }
+#scene7 { background-image: url('../img/last_part.jpg'); }
 
 .heart {
   position: fixed;
@@ -261,4 +260,109 @@ p {
       height: 100px;
       top: -50px;
   }
+}
+
+/* Loader styles */
+#loader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0a0a0a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+#loader {
+  width: 100px;
+  height: 100px;
+  border: 5px solid #e94560;
+  border-top: 5px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite, pulse 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+#content {
+  opacity: 0;
+  transition: opacity 1s ease-in;
+}
+
+/* Game styles */
+#game-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  max-width: 400px;
+}
+
+.card {
+  width: 80px;
+  height: 80px;
+  background-color: #e94560;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card.flipped {
+  background-color: #fff;
+  color: #e94560;
+}
+
+#game-message {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+#close-game {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #e94560;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+#close-game:hover {
+  background-color: #ff6b6b;
 }

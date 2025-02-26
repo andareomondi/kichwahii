@@ -6,113 +6,646 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Love Story: A Journey Through Time</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'her/css/styles.css' %}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: 'Roboto', sans-serif;
+            background-color: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .scene {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            padding: 4rem 2rem;
+            overflow: hidden;
+        }
+
+        .content {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 800px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.5s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .scene.active .content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .circular-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            position: absolute;
+            top: -75px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1rem;
+            margin-top: 4rem; /* Add space for the circular image */
+        }
+
+        h1 {
+            font-size: 3rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: #e94560;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: all 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            background-color: #ff6b6b;
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        #scene1 { background-image: url('https://picsum.photos/1600/900?random=1'); }
+        #scene2 { background-image: url('https://picsum.photos/1600/900?random=2'); }
+        #scene3 { background-image: url('https://picsum.photos/1600/900?random=3'); }
+        #scene4 { background-image: url('https://picsum.photos/1600/900?random=4'); }
+        #scene5 { background-image: url('https://picsum.photos/1600/900?random=5'); }
+        #scene6 { background-image: url('https://picsum.photos/1600/900?random=6'); }
+        #scene7 { background-image: url('https://picsum.photos/1600/900?random=7'); }
+
+        .heart {
+            position: fixed;
+            top: -1vh;
+            font-size: 1.5rem;
+            animation: fall linear infinite;
+            pointer-events: none;
+            opacity: 0.6;
+            z-index: 1000;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .music-control:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #final-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        #final-message.show {
+            opacity: 1;
+        }
+
+        #final-message h1 {
+            font-size: 4rem;
+            text-align: center;
+            padding: 2rem;
+            background-color: rgba(233, 69, 96, 0.8);
+            border-radius: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .memory-list {
+            text-align: left;
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .memory-list li {
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .memory-list li:hover {
+            transform: translateX(10px);
+            color: #ff6b6b;
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1.2rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border-left: 4px solid #e94560;
+            transition: all 0.3s ease;
+        }
+
+        .quote:hover {
+            background-color: rgba(233, 69, 96, 0.1);
+            transform: scale(1.02);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, 15px); }
+            100% { transform: translate(0, -0px); }
+        }
+
+        .scene::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, transparent 20%, black 150%);
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            p { font-size: 1rem; }
+            .content { padding: 1.5rem; max-width: 90%; }
+            #final-message h1 { font-size: 2.5rem; }
+            .quote { font-size: 1.1rem; }
+            .circular-image {
+                width: 100px;
+                height: 100px;
+                top: -50px;
+            }
+        }
+
+        /* Loader styles */
+        #loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+
+        #loader {
+            width: 100px;
+            height: 100px;
+            border: 5px solid #e94560;
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite, pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        #content {
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+
+        /* Game styles */
+        #game-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        .card {
+            width: 80px;
+            height: 80px;
+            background-color: #e94560;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card.flipped {
+            background-color: #fff;
+            color: #e94560;
+        }
+
+        #game-message {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        #close-game {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #e94560;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        #close-game:hover {
+            background-color: #ff6b6b;
+        }
+    </style>
 </head>
 <body>
-    <section id="scene1" class="scene">
-        <div class="content">
-            <img src="https://picsum.photos/200" alt="Your Love" class="circular-image">
-            <h1 class="floating">Our Love Story: A Journey Through Time</h1>
-            <p>From the moment our paths crossed, I knew my life would never be the same. You've painted my world with colors I never knew existed, and days with you are a blessing.</p>
-            <a href="#scene2" class="btn">The Beginning of Us</a>
-        </div>
-    </section>
-
-    <section id="scene2" class="scene">
-        <div class="content">
-            <img src="https://picsum.photos/201" alt="First Meeting" class="circular-image">
-            <h2 class="floating">The Day We Met</h2>
-            <p>Do you remember that chill night when i first knocked on your door. Scrambled up some words just to initiate a conversation with you 😅. Now all I think of doing everyday is doing it everyday(Happy or sad).</p>
-            <div class="quote">"Of all the hostels in Kutus, she walks into mine." - Casablanca (with a twist)</div>
-            <p>Little did I know that this chance encounter would be the start of the most beautiful journey of my life.</p>
-            <a href="#scene3" class="btn">Falling in Love</a>
-        </div>
-    </section>
-
-    <section id="scene3" class="scene">
-        <div class="content">
-            <img src="https://picsum.photos/202" alt="Falling in Love" class="circular-image">
-            <h2 class="floating">Falling in Love</h2>
-            <p>With each moment spent together, I found myself falling deeper. Your laughter became my favorite melody, your smile my guiding light. Remember our first kiss? It felt like the wierdest thing you have ever done. Though I cant say the same thing for nowadays.</p>
-            <div class="quote">"I fell in love without me knowing it" - John Green</div>
-            <p>Every day since then, my love for you has only grown stronger.</p>
-            <a href="#scene4" class="btn">The Little Things</a>
-        </div>
-    </section>
-
-    <section id="scene4" class="scene">
-        <div class="content">
-            <img src="https://picsum.photos/203" alt="Little Moments" class="circular-image">
-            <h2 class="floating">The Little Things That Mean Everything</h2>
-            <p>It's not just the grand gestures, but the small moments that make our love extraordinary:</p>
-            <ul class="memory-list">
-                <li>The way you slowly but surely became comfortable with me</li>
-                <li>Our silly dance arguments on who didn't say night to the other</li>
-                <li>How you always know when I need a hug</li>
-                <li>Our late-night conversations about everything and nothing</li>
-                <li>The unique handshake we invented</li>
-                <li>The comfort of your cuddles.</li>
-            </ul>
-            <p>These little things are the threads that weave the beautiful tapestry of our love.</p>
-            <a href="#scene5" class="btn">Our Adventures</a>
-        </div>
-    </section>
-
-    <section id="scene5" class="scene">
-        <div class="content">
-            <img src="https://picsum.photos/204" alt="Our Adventures" class="circular-image">
-            <h2 class="floating">Adventures Together</h2>
-            <p>Life with you is an endless adventure. But this is a section we never go to do</p>
-            <p>This I hoped we would have done:</p>
-            <ul class="memory-list">
-                <li>Got on a date</li>
-                <li>Stayed up all night to watch a bunch of seriers</li>
-                <li>Attempted to compete in a cooking competion</li>
-                <li>Take a shower together and see how it goes.</li>
-            </ul>
-            <p>Can't be mad on what we didn't do, just grateful for what we did.</p>
-            <a href="#scene6" class="btn">My Promise</a>
-        </div>
-    </section>
-
-    <section id="scene6" class="scene">
-        <div class="content">
-            <img src="https://picsum.photos/205" alt="My Promise" class="circular-image">
-            <h2 class="floating">My Promise to You</h2>
-            <p>As we stand here today, looking towards our future, I want to make these promises to you:</p>
-            <ul class="memory-list">
-                <li>I promise to love you fiercely and unconditionally</li>
-                <li>I promise to be your biggest supporter and your safe haven</li>
-                <li>I promise to grow with you, learn with you, and face life's challenges by your side</li>
-                <li>I promise to make you laugh, even on the darkest days</li>
-                <li>I promise to cherish every moment we have together</li>
-            </ul>
-            <div class="quote">"I vow to fiercely love you in all your forms, now and forever. I promise to never forget that this is a once in a lifetime love." - The Vow</div>
-            <a href="#scene7" class="btn">My Heart's Song</a>
-        </div>
-    </section>
-
-    <section id="scene7" class="scene">
-        <div class="content">
-            <img src="https://picsum.photos/206" alt="My Heart's Song" class="circular-image">
-            <h2 class="floating">You Are My Heart's Song</h2>
-            <p>You're the melody that plays in my heart, the rhythm in my steps, and the harmony in my life. With you, every day feels like a beautiful symphony.</p>
-            <p>As we write the next chapters of our story together, I want you to know that you are my everything. My love for you is endless, boundless, and eternal.</p>
-            <div class="quote">"In case you ever foolishly forget: I am never not thinking of you." - Virginia Woolf</div>
-            <a href="{% static 'her/docs/her.zip' %}" class="btn" download>Download zip file</a>
-            <p style="margin-top: 5px;"><small>Take care Patience Muiruri 💙💙</small></p>
-        </div>
-    </section>
-
-
-    <div class="music-control" id="music-toggle">
-        🎵
+    <div id="loader-wrapper">
+        <div id="loader"></div>
     </div>
 
-    <audio id="background-music" loop>
-        <source src="{% static 'her/audio/audio.weba' %}" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    <script src="{% static 'her/js/script.js' %}"></script>
+    <div id="content">
+        <section id="scene1" class="scene">
+            <div class="content">
+                <img src="https://picsum.photos/200" alt="Your Love" class="circular-image">
+                <h1 class="floating">Our Love Story: A Journey Through Time</h1>
+                <p>From the moment our paths crossed, I knew my life would never be the same. You've painted my world with colors I never knew existed, and every day with you is a masterpiece.</p>
+                <a href="#scene2" class="btn">The Beginning of Us</a>
+            </div>
+        </section>
+
+        <section id="scene2" class="scene">
+            <div class="content">
+                <img src="https://picsum.photos/201" alt="First Meeting" class="circular-image">
+                <h2 class="floating">The Day We Met</h2>
+                <p>Do you remember that chill night when i first knocked on your door. Scrambled up some words just to initiate a conversation with you 😅. Now all I think of doing everyday is doing it everyday(Happy or sad).</p>
+                <div class="quote">"Of all the hostels in Kutus, she walks into mine." - Casablanca (with a twist)</div>
+                <p>Little did I know that this chance encounter would be the start of the most beautiful journey of my life.</p>
+                <a href="#scene3" class="btn">Falling in Love</a>
+            </div>
+        </section>
+
+        <section id="scene3" class="scene">
+            <div class="content">
+                <img src="https://picsum.photos/202" alt="Falling in Love" class="circular-image">
+                <h2 class="floating">Falling in Love</h2>
+                <p>With each moment spent together, I found myself falling deeper. Your laughter became my favorite melody, your smile my guiding light. Remember our first kiss? It felt like the wierdest thing you have ever done. Though I cant say the same thing for nowadays.</p>
+                <div class="quote">"I fell in love without me knowing it" - John Green</div>
+                <p>Every day since then, my love for you has only grown stronger.</p>
+                <a href="#scene4" class="btn">The Little Things</a>
+            </div>
+        </section>
+
+        <section id="scene4" class="scene">
+            <div class="content">
+                <img src="https://picsum.photos/203" alt="Little Moments" class="circular-image">
+                <h2 class="floating">The Little Things That Mean Everything</h2>
+                <p>It's not just the grand gestures, but the small moments that make our love extraordinary:</p>
+                <ul class="memory-list">
+                    <li>The way you slowly but surely became comfortable with me</li>
+                    <li>Our silly dance arguments on who didn't say night to the other</li>
+                    <li>How you always know when I need a hug</li>
+                    <li>Our late-night conversations about everything and nothing</li>
+                    <li>The unique handshake we invented</li>
+                    <li>The comfort of your cuddles.</li>
+                </ul>
+                <p>These little things are the threads that weave the beautiful tapestry of our love.</p>
+                <a href="#scene5" class="btn">Our Adventures</a>
+            </div>
+        </section>
+
+        <section id="scene5" class="scene">
+            <div class="content">
+                <img src="https://picsum.photos/204" alt="Our Adventures" class="circular-image">
+                <h2 class="floating">Adventures Together</h2>
+                <p>Life with you is an endless adventure. But this is a section we never go to do</p>
+                <p>This I hoped we would have done:</p>
+                <ul class="memory-list">
+                    <li>Got on a date</li>
+                    <li>Stayed up all night to watch a bunch of seriers</li>
+                    <li>Attempted to compete in a cooking competion</li>
+                    <li>Take a shower together and see how it goes.</li>
+                </ul>
+                <p>Can't be mad on what we didn't do, just grateful for what we did.</p>
+                <a href="#scene6" class="btn">My Promise</a>
+            </div>
+        </section>
+
+        <section id="scene6" class="scene">
+            <div class="content">
+                <img src="https://picsum.photos/205" alt="My Promise" class="circular-image">
+                <h2 class="floating">My Promise to You</h2>
+                <p>As we stand here today, looking towards our future, I want to make these promises to you:</p>
+                <ul class="memory-list">
+                    <li>I promise to love you fiercely and unconditionally</li>
+                    <li>I promise to be your biggest supporter and your safe haven</li>
+                    <li>I promise to grow with you, learn with you, and face life's challenges by your side</li>
+                    <li>I promise to make you laugh, even on the darkest days</li>
+                    <li>I promise to cherish every moment we have together</li>
+                </ul>
+                <div class="quote">"I vow to fiercely love you in all your forms, now and forever. I promise to never forget that this is a once in a lifetime love." - The Vow</div>
+                <a href="#scene7" class="btn">My Heart's Song</a>
+            </div>
+        </section>
+
+        <section id="scene7" class="scene">
+            <div class="content">
+                <img src="https://picsum.photos/206" alt="My Heart's Song" class="circular-image">
+                <h2 class="floating">You Are My Heart's Song</h2>
+                <p>You're the melody that plays in my heart, the rhythm in my steps, and the harmony in my life. With you, every day feels like a beautiful symphony.</p>
+                <p>As we write the next chapters of our lives, I want you to know that you are one of the best thing that has ever happened to me. My love for you is endless, boundless, and eternal.</p>
+                <div class="quote">"In case you ever foolishly forget: I am never not thinking of you." - Virginia Woolf</div>
+                <a href="{% static 'her/docs/her.zip' %}" class="btn" download>Download zip file</a>
+                <p style="margin-top: 5px;"><small>Take care Patience Muiruri 💙💙</small></p>
+            </div>
+        </section>
+
+
+        <div class="music-control" id="music-toggle">
+            🎵
+        </div>
+
+        <audio id="background-music" loop>
+            <source src="{% static 'her/audio/audio.weba' %}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <div id="game-container">
+        <div id="game-board"></div>
+        <div id="game-message"></div>
+        <button id="close-game">Close Game</button>
+    </div>
+
+    <script>
+        const scenes = document.querySelectorAll('.scene');
+        const musicToggle = document.getElementById('music-toggle');
+        const backgroundMusic = document.getElementById('background-music');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    entry.target.classList.remove('active');
+                }
+            });
+        }, { threshold: 0.3 });
+
+        scenes.forEach(scene => observer.observe(scene));
+
+        musicToggle.addEventListener('click', () => {
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+                musicToggle.textContent = '🔊';
+            } else {
+                backgroundMusic.pause();
+                musicToggle.textContent = '🔇';
+            }
+        });
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 5 + 5 + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 10000);
+        }
+
+        setInterval(createHeart, 2000);
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Loader functionality
+        window.addEventListener('load', function() {
+            const loaderWrapper = document.getElementById('loader-wrapper');
+            const content = document.getElementById('content');
+
+            // Simulate loading time (you can remove this setTimeout if you want it to hide immediately after load)
+            setTimeout(() => {
+                loaderWrapper.style.opacity = '0';
+                loaderWrapper.style.visibility = 'hidden';
+                content.style.opacity = '1';
+            }, 2000); // Adjust time as needed
+        });
+
+        // Game functionality
+        const gameContainer = document.getElementById('game-container');
+        const gameBoard = document.getElementById('game-board');
+        const gameMessage = document.getElementById('game-message');
+        const closeGameBtn = document.getElementById('close-game');
+
+        const symbols = ['❤️', '💖', '💕', '💓', '💗', '💘', '💝', '💞'];
+        let cards = [...symbols, ...symbols];
+        let flippedCards = [];
+        let matchedPairs = 0;
+
+        function shuffleCards(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createCard(symbol, index) {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.dataset.index = index;
+            card.addEventListener('click', flipCard);
+            return card;
+        }
+
+        function flipCard() {
+            if (flippedCards.length < 2 && !this.classList.contains('flipped')) {
+                this.classList.add('flipped');
+                this.textContent = cards[this.dataset.index];
+                flippedCards.push(this);
+
+                if (flippedCards.length === 2) {
+                    setTimeout(checkMatch, 500);
+                }
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            if (cards[card1.dataset.index] === cards[card2.dataset.index]) {
+                matchedPairs++;
+                if (matchedPairs === symbols.length) {
+                    gameMessage.textContent = "Congratulations! You've matched all the love symbols! 💖 Thanks for everything";
+                }
+            } else {
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
+                card1.textContent = '';
+                card2.textContent = '';
+            }
+            flippedCards = [];
+        }
+
+        function startGame() {
+            gameBoard.innerHTML = '';
+            gameMessage.textContent = '';
+            matchedPairs = 0;
+            flippedCards = [];
+            cards = shuffleCards(cards);
+
+            cards.forEach((symbol, index) => {
+                const card = createCard(symbol, index);
+                gameBoard.appendChild(card);
+            });
+
+            gameContainer.style.display = 'flex';
+        }
+
+        closeGameBtn.addEventListener('click', () => {
+            gameContainer.style.display = 'none';
+        });
+
+        // Add a button to start the game
+        const startGameBtn = document.createElement('button');
+        startGameBtn.textContent = '🎮';
+        startGameBtn.classList.add('btn');
+        startGameBtn.style.position = 'fixed';
+        startGameBtn.style.bottom = '20px';
+        startGameBtn.style.left = '20px';
+        startGameBtn.addEventListener('click', startGame);
+        document.body.appendChild(startGameBtn);
+    </script>
 </body>
 </html>
