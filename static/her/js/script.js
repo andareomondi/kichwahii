@@ -1,5 +1,4 @@
 const scenes = document.querySelectorAll('.scene');
-const finalMessage = document.getElementById('final-message');
 const finalBtn = document.getElementById('final-btn');
 const musicToggle = document.getElementById('music-toggle');
 const backgroundMusic = document.getElementById('background-music');
@@ -15,14 +14,6 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.3 });
 
 scenes.forEach(scene => observer.observe(scene));
-
-finalBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    finalMessage.classList.remove('hidden');
-    setTimeout(() => {
-        finalMessage.classList.add('show');
-    }, 100);
-});
 
 musicToggle.addEventListener('click', () => {
     if (backgroundMusic.paused) {
