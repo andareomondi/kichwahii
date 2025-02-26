@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Story: A Journey Through Time</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'her/css/styles.css' %}">
+</head>
+<body>
+    <section id="scene1" class="scene">
+        <div class="content">
+            <img src="https://picsum.photos/200" alt="Your Love" class="circular-image">
+            <h1 class="floating">Our Love Story: A Journey Through Time</h1>
+            <p>From the moment our paths crossed, I knew my life would never be the same. You've painted my world with colors I never knew existed, and days with you are a blessing.</p>
+            <a href="#scene2" class="btn">The Beginning of Us</a>
+        </div>
+    </section>
+
+    <section id="scene2" class="scene">
+        <div class="content">
+            <img src="https://picsum.photos/201" alt="First Meeting" class="circular-image">
+            <h2 class="floating">The Day We Met</h2>
+            <p>Do you remember that chill night when i first knocked on your door. Scrambled up some words just to initiate a conversation with you 😅. Now all I think of doing everyday is doing it everyday(Happy or sad).</p>
+            <div class="quote">"Of all the hostels in Kutus, she walks into mine." - Casablanca (with a twist)</div>
+            <p>Little did I know that this chance encounter would be the start of the most beautiful journey of my life.</p>
+            <a href="#scene3" class="btn">Falling in Love</a>
+        </div>
+    </section>
+
+    <section id="scene3" class="scene">
+        <div class="content">
+            <img src="https://picsum.photos/202" alt="Falling in Love" class="circular-image">
+            <h2 class="floating">Falling in Love</h2>
+            <p>With each moment spent together, I found myself falling deeper. Your laughter became my favorite melody, your smile my guiding light. Remember our first kiss? It felt like the wierdest thing you have ever done. Though I cant say the same thing for nowadays.</p>
+            <div class="quote">"I fell in love without me knowing it" - John Green</div>
+            <p>Every day since then, my love for you has only grown stronger.</p>
+            <a href="#scene4" class="btn">The Little Things</a>
+        </div>
+    </section>
+
+    <section id="scene4" class="scene">
+        <div class="content">
+            <img src="https://picsum.photos/203" alt="Little Moments" class="circular-image">
+            <h2 class="floating">The Little Things That Mean Everything</h2>
+            <p>It's not just the grand gestures, but the small moments that make our love extraordinary:</p>
+            <ul class="memory-list">
+                <li>The way you slowly but surely became comfortable with me</li>
+                <li>Our silly dance arguments on who didn't say night to the other</li>
+                <li>How you always know when I need a hug</li>
+                <li>Our late-night conversations about everything and nothing</li>
+                <li>The unique handshake we invented</li>
+                <li>The comfort of your cuddles.</li>
+            </ul>
+            <p>These little things are the threads that weave the beautiful tapestry of our love.</p>
+            <a href="#scene5" class="btn">Our Adventures</a>
+        </div>
+    </section>
+
+    <section id="scene5" class="scene">
+        <div class="content">
+            <img src="https://picsum.photos/204" alt="Our Adventures" class="circular-image">
+            <h2 class="floating">Adventures Together</h2>
+            <p>Life with you is an endless adventure. But this is a section we never go to do</p>
+            <p>This I hoped we would have done:</p>
+            <ul class="memory-list">
+                <li>Got on a date</li>
+                <li>Stayed up all night to watch a bunch of seriers</li>
+                <li>Attempted to compete in a cooking competion</li>
+                <li>Take a shower together and see how it goes.</li>
+            </ul>
+            <p>Can't be mad on what we didn't do, just grateful for what we did.</p>
+            <a href="#scene6" class="btn">My Promise</a>
+        </div>
+    </section>
+
+    <section id="scene6" class="scene">
+        <div class="content">
+            <img src="https://picsum.photos/205" alt="My Promise" class="circular-image">
+            <h2 class="floating">My Promise to You</h2>
+            <p>As we stand here today, looking towards our future, I want to make these promises to you:</p>
+            <ul class="memory-list">
+                <li>I promise to love you fiercely and unconditionally</li>
+                <li>I promise to be your biggest supporter and your safe haven</li>
+                <li>I promise to grow with you, learn with you, and face life's challenges by your side</li>
+                <li>I promise to make you laugh, even on the darkest days</li>
+                <li>I promise to cherish every moment we have together</li>
+            </ul>
+            <div class="quote">"I vow to fiercely love you in all your forms, now and forever. I promise to never forget that this is a once in a lifetime love." - The Vow</div>
+            <a href="#scene7" class="btn">My Heart's Song</a>
+        </div>
+    </section>
+
+    <section id="scene7" class="scene">
+        <div class="content">
+            <img src="https://picsum.photos/206" alt="My Heart's Song" class="circular-image">
+            <h2 class="floating">You Are My Heart's Song</h2>
+            <p>You're the melody that plays in my heart, the rhythm in my steps, and the harmony in my life. With you, every day feels like a beautiful symphony.</p>
+            <p>As we write the next chapters of our story together, I want you to know that you are my everything. My love for you is endless, boundless, and eternal.</p>
+            <div class="quote">"In case you ever foolishly forget: I am never not thinking of you." - Virginia Woolf</div>
+            <a href="{% static 'her/docs/her.zip' %}" class="btn" download>Download zip file</a>
+            <p style="margin-top: 5px;"><small>Take care Patience Muiruri 💙💙</small></p>
+        </div>
+    </section>
+
+
+    <div class="music-control" id="music-toggle">
+        🎵
+    </div>
+
+    <audio id="background-music" loop>
+        <source src="{% static 'her/audio/audio.weba' %}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <script src="{% static 'her/js/script.js' %}"></script>
+</body>
+</html>
